@@ -76,3 +76,70 @@ Review the configuration constants near the top of the sketch before compiling. 
 #define METERS_PER_STROKE 9.0f
 #define DEVICE_NAME       "ESP32 Rower"
 #define NOTIFY_INTERVAL   1000
+````cpp
+
+
+Set SIMULATE to false to read the reed switch.
+Set SIMULATE to true to test without the sensor.
+Change REED_PIN if you use a different GPIO.
+Adjust DEBOUNCE_US if the sensor bounces or valid strokes are missed.
+METERS_PER_STROKE is an estimate. Calibrate it for your rower if you want the displayed distance to better match another device.
+NOTIFY_INTERVAL controls the BLE notification interval.
+The reported distance and power are estimates, not direct measurements. In particular, power is calculated from estimated speed and the configured distance per stroke.
+
+## Build and upload firmware
+
+Install the ESP32 board support package in the Arduino IDE.
+Install the libraries listed under Software requirements.
+Open firmware/SkandikaRowerFTMS/SkandikaRowerFTMS.ino.
+Select your ESP32 board and its serial port.
+Set SIMULATE to true for an initial sensor-free test, or false for the reed switch.
+Compile and upload the sketch.
+Open the Serial Monitor at 115200 baud.
+Confirm that the ESP32 starts BLE advertising.
+Scan for the device name configured in DEVICE_NAME.
+BLE discovery and displayed metrics depend on the app and the FTMS features it supports.
+
+## BLE services
+The firmware is intended to expose these BLE services and characteristics:
+
+Name	UUID	Purpose
+Fitness Machine Service	0x1826	Main fitness-machine service
+Rower Data	0x2AD1	Rower data notifications
+Fitness Machine Control Point	0x2AD9	App control requests
+Fitness Machine Status	0x2ADA	Machine status notifications
+Training Status	0x2AD3	Training status
+Device Information Service	0x180A	Device information
+Manufacturer Name	0x2A29	Manufacturer string
+Model Number	0x2A24	Model string
+This is a DIY implementation and may not support every FTMS feature or control-point operation. An app may reject the device or display only a subset of its metrics.
+
+## OLED values
+
+The OLED can show the firmware's calculated stroke rate, stroke count, pace, distance, and power. Distance and power are estimated from detected strokes and the configured METERS_PER_STROKE value.
+
+## Troubleshooting
+
+The ESP32 does not appear in the app
+Check that the ESP32 is powered and that the Serial Monitor reports advertising.
+Confirm the app is scanning for compatible BLE fitness equipment.
+Disconnect other devices or apps that may already be connected to the ESP32.
+Check whether the app supports the FTMS Rower Data characteristic.
+Stroke rate is too high or jumps
+Confirm that the sensor generates one accepted event per stroke.
+Check the sensor wiring and placement.
+Adjust DEBOUNCE_US if contact bounce creates extra events.
+Compare detected events and calculated intervals in the serial output.
+Stroke rate remains at zero
+Confirm SIMULATE is set to false when using the sensor.
+Confirm the reed switch is wired between the configured GPIO and GND.
+Check that the selected GPIO supports interrupts on your board.
+Verify that the reed switch changes state while rowing.
+Distance differs from another app or console
+Distance is estimated from stroke count and METERS_PER_STROKE. Adjust that value only after comparing equivalent workouts and confirming the stroke count is accurate.
+
+## Safety
+Secure the ESP32, sensor, and wiring away from moving parts. Use the rower according to its manufacturer's instructions. This project is experimental and is not a replacement for the original console or safety systems.
+
+## Contributing
+Issues, corrections, and pull requests are welcome. When reporting a problem, include the rower model, console version if known, ESP32 board, app and operating-system versions, and relevant serial output.
