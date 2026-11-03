@@ -10,6 +10,10 @@ On the Skandika rower and standard console tested for this project, the console 
 
 This project provides a separate ESP32-based FTMS BLE device. App compatibility is not guaranteed and can depend on the rower model, app version, operating system, and the FTMS features supported by the app.
 
+## Disclaimer
+
+This wiring guide is provided for informational purposes only. The project author provides no warranty or guarantee regarding the wiring instructions, hardware compatibility, or fitness for a particular purpose. You are responsible for checking your components and connections before powering the device. The project author is not liable for damage, injury, or loss resulting from the use of this guide or project.
+
 ## Features
 
 - ESP32 reads stroke events from a reed switch.
