@@ -1,4 +1,4 @@
-# Skandika Rower FTMS Bridge
+# Skandika Rower Peloton APP FTMS Bridge
 
 An ESP32-based DIY project that reads rowing strokes from a reed switch and broadcasts estimated rowing data over Bluetooth Low Energy using the Fitness Machine Service (FTMS).
 
